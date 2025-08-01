@@ -1,0 +1,291 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+.containers {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.carousel-caption {
+  bottom: 40%;
+}
+
+.carousel-caption h1 {
+  font-size: 4rem;
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+/* products */
+.products {
+  margin-top: 50px;
+  text-align: center;
+}
+
+/* cart page */
+.cart {
+  background-color: #fff;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.summary {
+  background-color: #f5f5f5;
+}
+
+img {
+  width: 60px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.quantity-control {
+  font-size: 1rem;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.remove-item {
+  font-size: 1rem;
+  text-decoration: none;
+  font-weight: bold;
+  color: red;
+}
+
+.back-to-shop a {
+  color: #6c757d;
+  font-size: 0.9rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back-to-shop a:hover {
+  text-decoration: underline;
+}
+
+#code {
+  background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)),
+    url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
+  background-repeat: no-repeat;
+  background-position-x: 98%;
+  background-position-y: center;
+  background-size: 16px;
+}
+
+
+/* all products page */
+.product-card {
+  background: #fff;
+  transition: all 0.3s ease;
+  border-radius: 18px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.product-image-container {
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.product-img {
+  height: 230px;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  border-radius: 12px;
+}
+
+.product-image-container:hover .product-img {
+  transform: scale(1.05);
+}
+
+.wishlist-icon {
+  background: #f5f5f5;
+  padding: 8px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.wishlist-icon:hover {
+  background: #ffefef;
+  color: #dc3545;
+}
+
+
+
+/* profile page */
+.active3 {
+  background-color: #e9ecef;
+  /* Bootstrap's light gray */
+}
+
+a.btn-view-all {
+  all: unset;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: #1a1a1a;
+  text-decoration: none;
+  border-bottom: 1px solid #1a1a1a;
+  letter-spacing: 1px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* address form */
+.form-light {
+  background-color: #f2f2f2;
+  color: #2f2f2f;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.form-light h5 {
+  color: #2f2f2f;
+  font-weight: 600;
+}
+
+.form-light label {
+  color: #444;
+}
+
+.form-light .form-control {
+  background-color: #ffffff;
+  color: #2f2f2f;
+  border: 1px solid #ccc;
+}
+
+.form-light .form-control:focus {
+  border-color: #888;
+  box-shadow: none;
+  background-color: #fff;
+}
+
+.btn-dark-gray {
+  background-color: #2f2f2f;
+  color: white;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-dark-gray:hover {
+  background-color: #444;
+}
+
+/* product details */
+
+.thumbnail {
+  width: 100px;
+  height: 120px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  margin: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  border-radius: 10px;
+}
+
+.thumbnail:hover,
+.thumbnail.active1 {
+  border-color: #198754;
+  box-shadow: 0 0 10px rgba(25, 135, 84, 0.4);
+}
+
+#mainImage {
+  width: 420px;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.price-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.product-option .btn {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.product-buttons .btn {
+  width: 48%;
+  padding: 12px;
+  font-size: 1rem;
+}
+
+
+
+/* deals of the day */
+.hide-scrollbar {
+  scrollbar-width: none;         
+  -ms-overflow-style: none;      
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;                 
+}
+
+
+
+/* reviews */
+.review-section {
+  margin: 30px 0px;
+  background-color: #fdf3f8;
+  font-family: 'Segoe UI', sans-serif;
+  
+}
+
+.review-section h5 {
+  font-size: 1rem;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.review-section .blockquote p {
+  font-size: 4rem;
+  font-style: italic;
+  color: #5e5e5e;
+  font-family: 'Dancing Script', cursive; 
+}
+
+.review-section blockquote footer {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  color: #888;
+}
+
+.custom-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.custom-indicators button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #bbb;  
+  border: none;
+  opacity: 1;
+  transition: background-color 0.3s ease;
+}
+
+
+
+
+
+/* reviews */
