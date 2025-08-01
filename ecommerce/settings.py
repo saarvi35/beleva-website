@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -143,9 +151,6 @@ EMAIL_HOST_USER = "saarvisac35@gmail.com"
 EMAIL_HOST_PASSWORD = "fqwj odfy dszd npfs"
 
 
-STRIPE_SECRET_KEY = 'sk_test_51RmvN503mKJWHbI7lxeoYtn6wfWbiDMHzPI96JljGcZFyvtGn2InhBifyk7eaqexFxkJkdvltTcY3bihaAS0iWdZ00r3TmeGib'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51RmvN503mKJWHbI7o4qkZINd17pM2JA1ySIyluJGiLWpCiB0j2chyGL9MxZwVh1wxwGSJff4JaUtB1B3djrmkVz600VfCrjouT'
-
 
 
 AUTHENTICATION_BACKENDS = (
@@ -153,8 +158,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 ) 
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '819707804468-ppc0rl044rpvqbsr009rm6ha3vkgidn0.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/google-login-success/'
