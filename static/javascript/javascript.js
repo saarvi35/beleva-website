@@ -93,6 +93,34 @@ const scrollContainer = document.getElementById('productScroll');
   // Initialize button visibility
   window.addEventListener('load', updateButtonVisibility);
 
+
+// for deals scroll
+const scrollContainer1 = document.getElementById('productScroll1');
+  const scrollLeftBtn1 = document.getElementById('scrollLeftBtn1');
+  const scrollRightBtn1 = document.getElementById('scrollRightBtn1');
+
+  // Show/hide buttons based on scroll position
+  function updateButtonVisibility() {
+    scrollLeftBtn1.style.display = scrollContainer1.scrollLeft > 0 ? 'flex' : 'none';
+    const maxScrollLeft = scrollContainer1.scrollWidth - scrollContainer1.clientWidth;
+    scrollRightBtn1.style.display = scrollContainer1.scrollLeft < maxScrollLeft ? 'flex' : 'none';
+  }
+
+  scrollLeftBtn1.addEventListener('click', () => {
+    scrollContainer1.scrollBy({ left: -300, behavior: 'smooth' });
+  });
+
+  scrollRightBtn1.addEventListener('click', () => {
+    scrollContainer1.scrollBy({ left: 300, behavior: 'smooth' });
+  });
+
+  scrollContainer1.addEventListener('scroll', updateButtonVisibility);
+
+  // Initialize button visibility
+  window.addEventListener('load', updateButtonVisibility);
+
+
+
 // products wishlist
   function toggleWishlist(button) {
     const productId = button.getAttribute('data-product-id');
@@ -118,3 +146,15 @@ window.addEventListener("DOMContentLoaded", function () {
     }, 3500);
   }
 });
+
+
+// deals timer
+  const end = new Date("2025-09-15T23:59:59").getTime();
+  const t = setInterval(() => {
+    let d = end - Date.now();
+    if (d <= 0) return document.getElementById("deal-timer").innerHTML="Deal Expired!", clearInterval(t);
+    document.getElementById("days").innerText = Math.floor(d/864e5)+"d";
+    document.getElementById("hours").innerText = Math.floor(d%(864e5)/36e5)+"h";
+    document.getElementById("minutes").innerText = Math.floor(d%(36e5)/6e4)+"m";
+    document.getElementById("seconds").innerText = Math.floor(d%(6e4)/1e3)+"s";
+  },1000);

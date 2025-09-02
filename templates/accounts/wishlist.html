@@ -11,7 +11,7 @@
                     
         <div class="p-3 shadow mb-3 rounded-3 bg-white">
                         {% for item in items %}
-                        <div class="product-card p-2 row align-items-center">
+                        <div class="product-card1 p-2 row align-items-center">
                             <div class="col-md-2 d-flex justify-content-center">
                                 <img src="{{ item.product.details_image.first.image.url }}" alt="{{ item.product.product_name }}" class="img-fluid" style="height: 100px; width: 130px; object-fit: cover;">
                             </div>
@@ -26,12 +26,15 @@
                                     <span class="text-danger fw-bold">₹{{ item.product.discount_price }}</span>
                                 </div>
                                 {% else %}
-                                <span class="text-danger fw-bold">₹{{ item.product.original_price }}</span>
+                                <div class="price-info d-flex align-items-center justify-content-center gap-3">
+                                    <span class="text-danger fw-bold">₹{{ item.product.original_price }}</span>
+                                </div>
+                                
                             {% endif %}
                             </div>
                             <div class="col-md-1">
-                                <a href="{% url 'add_to_cart' item.product.id %}" class="text-danger" title="Add to Cart">
-                                    <i class="bi bi-cart-plus fs-5"></i>
+                                <a href="{% url 'add_to_cart' item.product.id %}" class="text-danger" title="Add to Bag">
+                                    <i class="bi bi-bag-plus fs-5"></i>
                                 </a>
                             </div>
                             <div class="col-md-1 ">
@@ -44,9 +47,14 @@
                         {% endfor %}
         </div>
     {% else %}
-        <div style="height: 65vh; ">
-            <h5 class="text-dark">There are no products in your Wishlist.</h5>
-        </div>
+        <div class="d-flex justify-content-center align-items-center bg-white shadow rounded-3 p-5" style="min-height: 300px;">
+                <div class="text-center">
+                    <img src="{% static 'images/wishlist.png' %}" alt="Empty Wishlist" class="img-fluid mb-3" style="max-width: 300px;">
+                    <h5 class="text-muted">Your wishlist is empty.</h5>
+                    <p class="text-muted small">Looks like you haven't added any products yet.</p>
+                    <a href="{% url 'all_products' %}" class="btn btn-outline-dark mt-2">Browse Products</a>
+                </div>
+            </div>
 
     {% endif %}
 </div>

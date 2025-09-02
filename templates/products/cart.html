@@ -13,7 +13,7 @@
         <div class="title mb-4">
           <div class="row">
             <div class="col">
-              <h4><b>Shopping Cart</b></h4>
+              <h4><b>Shopping Bag</b></h4>
             </div>
           </div>
         </div>
@@ -113,8 +113,9 @@
     </div>
 
     {% else %}
-    <div class="bg-white p-4" style="background-image: ;">
-      <h3>Your cart is feeling a little empty...</h3>
+    <div class="bg-white p-4 text-center">
+      <img src="{% static 'images/cart.png' %}" alt="bag" id="bag">
+      <h3>Your shopping bag is feeling a little empty...</h3>
       <p>Looks like you haven’t added anything yet.</p>
       <a href="{% url 'all_products' %}" class="btn btn-dark">Start Shopping</a>
     </div>

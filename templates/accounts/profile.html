@@ -151,6 +151,102 @@
     font-size: 13px;
     color: #555;
   }
+
+  /* Make account page responsive */
+@media (max-width: 991.98px) { /* tablets and below */
+  .account-sidebar {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-radius: 6px;
+  }
+
+  .sidebar-user {
+    padding: 1rem;
+    justify-content: flex-start;
+  }
+
+  .account-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 767.98px) { /* small phones */
+  .account-wrapper {
+    padding: 1rem 0;
+  }
+
+  .account-sidebar {
+    font-size: 13px;
+    padding: 0.5rem 0;
+  }
+
+  .sidebar-user {
+    flex-direction: row;
+    align-items: center;
+    padding: 0.75rem 1rem;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    font-size: 14px;
+  }
+
+  .user-details .user-name {
+    font-size: 14px;
+  }
+
+  .user-details .user-bonus {
+    font-size: 12px;
+  }
+
+  .sidebar-group {
+    padding: 0.75rem 1rem 0;
+  }
+
+  .sidebar-group ul li {
+    padding: 6px 0;
+  }
+
+  .account-content {
+    padding: 1rem;
+  }
+
+  .account-content h3 {
+    font-size: 20px;
+    margin-bottom: 1rem;
+  }
+
+  .info-title {
+    font-size: 14px;
+  }
+
+  .info-value {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 575.98px) { /* extra small screens */
+  .sidebar-user {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .avatar {
+    margin-right: 0;
+  }
+
+  .account-content h3 {
+    font-size: 18px;
+  }
+
+  .info-section {
+    margin-bottom: 1.2rem;
+  }
+}
+
 </style>
 
 <div class="container account-wrapper">
@@ -174,7 +270,7 @@
         <p class="sidebar-label">Orders</p>
         <ul>
           <li> <a href="{% url 'wishlist' %}" class="text-decoration-none text-dark"> <i class="bi bi-heart"></i> Wishlist</a></li>
-          <li> <a href="{% url 'cart' %}" class="text-decoration-none text-dark"><i class="bi bi-cart"></i> Cart</a></li>
+          <li> <a href="{% url 'cart' %}" class="text-decoration-none text-dark"><i class="bi bi-bag"></i>Shopping Bag</a></li>
           <li> <a href="{% url 'my_orders' %}" class="text-decoration-none text-dark"><i class="bi bi-star"></i>My Orders</a></li>
         </ul>
       </div>
@@ -184,7 +280,7 @@
         <p class="sidebar-label">Manage account</p>
         <ul>
           <li class="active"><a href="{% url 'profile' %}" class="text-decoration-none text-dark"><i class="bi bi-person"></i> Personal Info </a></li>
-          <li><a href="{% url 'address' %}" class="text-decoration-none text-dark"><i class="bi bi-geo-alt"></i> Addresses</li>
+          <li><a href="{% url 'add_address' %}" class="text-decoration-none text-dark"><i class="bi bi-geo-alt"></i> Addresses </a></li>
         </ul>
       </div>
 
@@ -192,8 +288,8 @@
       <div class="sidebar-group">
         <p class="sidebar-label">Customer service</p>
         <ul>
-          <li><i class="bi bi-question-circle"></i> Help center</li>
-          <li><i class="bi bi-file-earmark-text"></i> Terms and conditions</li>
+          <li><a href="{% url 'help_center' %}" class="text-decoration-none text-dark"><i class="bi bi-question-circle"></i> Help center</a></li>
+          <li><a href="{% url 'terms' %}" class="text-decoration-none text-dark"><i class="bi bi-file-earmark-text"></i> Terms and conditions </a></li>
         </ul>
       </div>
 
@@ -230,7 +326,7 @@
 
         <!-- Password -->
         <div class="info-section">
-          <div class="info-title">Password </div>
+          <div class="info-title">Password <a href="{% url 'reset_password' %}" class="edit-link">Edit</a></div>
           <div class="info-value">**********</div>
         </div>
 
@@ -252,3 +348,5 @@
 
 </div>
 {% endblock %}
+
+

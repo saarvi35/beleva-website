@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect ,get_object_or_404
 from django.http import HttpResponse
 from .models import Register , BillingAddress , Order , OrderItem
-from products.models import CartItem  
+from products.models import CartItem , AllProducts
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
@@ -21,7 +21,7 @@ def register(request):                    # register page
         confirm_password_var = request.POST.get('confirm')
 
         if confirm_password_var != password_var:
-            # messages.error(request, 'Passwords donot match.')
+            messages.error(request, 'Passwords donot match.')
             return redirect('register')
 
         hashed_password = make_password(password_var)
@@ -35,7 +35,7 @@ def register(request):                    # register page
         )
 
         data1.save()
-        # messages.success(request, "Registration successful!")
+        messages.success(request, "Registration successful!")
         return redirect('login')
 
     return render(request, 'accounts/register.html')
@@ -48,15 +48,19 @@ def user_login(request):
         try:
             form_data = Register.objects.filter(email = email_var).first() # in form model give rows which match the user entered email [email is register email]
             if form_data is None:
+                messages.error(request, "User does not exist")
                 return render(request, 'accounts/login.html')
             
             if check_password(password_var , form_data.password):
                 request.session['register_id'] = form_data.id   
                 request.session['user_email'] = form_data.email  
+                messages.success(request,"Login Successful!")
                 return redirect('home')
             else:
+                messages.error(request,"Incorrect Password!")
                 return render(request , 'accounts/login.html')
-        except Register.DoesNotExist:   # if email entered by user does not exist
+        except Register.DoesNotExist:
+            messages.error("User does not exist") 
             return render (request,'accounts/login.html')
 
     return render(request , 'accounts/login.html')
@@ -64,7 +68,7 @@ def user_login(request):
 
 def logout(request):
     request.session.flush()
-    # messages.success(request,"Logout Successfull")
+    messages.error(request,"Logout Successfull")
     return redirect('login')
 
 
@@ -110,14 +114,32 @@ def address(request):
                 zip_code = zip_code,
                 order_notes = order_notes
             )
-
-        cart = CartItem.objects.filter(user_id = register_id)
-        if not cart.exists():
-            return redirect('cart')
-        
+        buy_now = request.session.get('buy_now')
         grand_total = 0
-        for item in cart:
-            grand_total += item.total_price()
+        items = []
+        if buy_now:
+            product = get_object_or_404(AllProducts , id=buy_now['id'])
+            quantity = buy_now.get('quantity' , 1)
+            price = product.discount_price * quantity
+            grand_total += price
+            items.append({
+                'product' : product ,
+                'quantity' : quantity , 
+                'price' : price
+            })
+        else:
+            cart = CartItem.objects.filter(user_id = register_id)
+            if not cart.exists():
+                return redirect('cart')
+            
+            grand_total = 0
+            for item in cart:
+                grand_total += item.total_price()
+                items.append({
+                    'product' : item.product ,
+                    'quantity' : item.quantity ,
+                    'price' : item.total_price()
+                })
 
         # shipping charges
         if grand_total < 1499:
@@ -159,48 +181,68 @@ def address(request):
                     'quantity' : 1,
                 }],
                 mode= 'payment',
-                success_url= 'https://beleva-website.onrender.com/payment_success/' , 
-                cancel_url= 'https://beleva-website.onrender.com/payment_cancel' ,
+                success_url= 'http://127.0.0.1:8000//accounts/payment_success/' , 
+                cancel_url= 'http://127.0.0.1:8000//accounts/payment_cancel' ,
                 customer_email= email_shipping ,
             )
 
         return redirect(session.url , code=303)
-    cart = CartItem.objects.filter(user_id = register_id)
-    total = 0
-    for item in cart:
-        total += item.total_price()
-    return render(request , 'accounts/billing.html' , {'saved_address' : saved_address , 'items' : cart , 'total' : total})
+    buy_now = request.session.get('buy_now')
+    if buy_now:
+        product = get_object_or_404(AllProducts , id=buy_now['id'])
+        quantity = buy_now.get('quantity' , 1)
+        total = product.discount_price * quantity
+        grand_total += price
+        items.append({
+            'product' : product ,
+            'quantity' : quantity , 
+            'price' : total
+            })
+    else:
+        cart = CartItem.objects.filter(user_id = register_id)
+        total = 0
+        for item in cart:
+            total += item.total_price()
+        items = cart
+    return render(request , 'accounts/billing.html' , {'saved_address' : saved_address , 'items' : items , 'total' : total})
 
 
-def add_address(request):
+def billing(request):
     register_id = request.session.get('register_id')
     if not register_id:
         return redirect('login') 
     user = Register.objects.get(id = register_id)
+    addresses = BillingAddress.objects.filter(user_id = register_id)
     if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email_shipping')
+        phone_no = request.POST.get('phone')
         address = request.POST.get('address')
         country = request.POST.get('country')
         state = request.POST.get('state')
         city = request.POST.get('city')
         zip_code = request.POST.get('zip_code')
 
-        register = Register.objects.get(id = register_id)
 
         BillingAddress.objects.create(
             user = user ,
-            full_name = register.name,
-            email_shipping = register.email , 
-            phone = register.phone_no , 
+            full_name = full_name,
+            email_shipping =    email , 
+            phone = phone_no , 
             address = address,
             country = country ,
             state = state ,
             city = city ,
             zip_code = zip_code
         )
-        return redirect('profile')
+        return redirect('add_address')
 
-    return render(request , 'accounts/address.html')
+    return render(request , 'accounts/address.html' , {'addresses' : addresses})
 
+def delete_address(request , address):
+    address = get_object_or_404(BillingAddress, id=address)
+    address.delete()
+    return redirect('add_address') 
 
 def payment_success(request, order_id=None):
     if order_id:
@@ -271,12 +313,12 @@ def google_login_success(request):
         user = Register.objects.create(
             name=name,
             email=email,
-            phone_no="0000000000",  # default value
+            phone_no="0000000000",  
             password="google_auth_user"
         )
         messages.success(request, "Account created.")
     else:
-        messages.info(request, "Logged in successfully.")
+        messages.success(request, "Login successful!")
 
     request.session.flush()
     request.session['register_id'] = user.id
@@ -388,7 +430,7 @@ def track_order(request , order_id):
     ]
     order_status = order.status.upper()
     if order_status not in tracking_steps:
-        tracking_steps.insert(0,order.status)
+        tracking_steps.insert(0,order_status)
     current_index = tracking_steps.index(order_status)
  
     return render(request, 'accounts/track_order.html', {
@@ -397,3 +439,5 @@ def track_order(request , order_id):
         'current_index' : current_index ,
         })
 
+def help_center(request):
+    return render(request , 'mart/help_center.html')

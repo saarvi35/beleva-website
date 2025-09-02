@@ -27,7 +27,7 @@ def home(request):
 
 def all_products(request):
     query = request.GET.get('z' , '' )   
-    category_id = request.GET.get("category")
+    category = request.GET.getlist("category")
     products = AllProducts.objects.all().order_by('?')
 
     # search bar
@@ -38,11 +38,10 @@ def all_products(request):
         )
 
     # category 
-    if category_id:
-        products = products.filter(category_id=category_id)
+    if category:
+        products = products.filter(category_id__in=category)
     categories = Category.objects.all()
-
-    category = request.GET.getlist('category')    
+   
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
     availability = request.GET.get('is_available')
@@ -109,6 +108,12 @@ def all_products(request):
     page_number = request.GET.get('page')   
     page_object = paginator.get_page(page_number)
 
+    if category:
+        selected_category = list(Category.objects.filter(id__in = category).values_list('category_name' , flat=True))
+    else:
+        selected_category = ['all products']
+
+
     context = {
         'page_object': page_object , 
         'categories' : categories ,
@@ -119,7 +124,9 @@ def all_products(request):
         'selected_sort' : selected_sort ,
         'view' : view ,
         'request' : request ,
-        'heading' : heading
+        'heading' : heading ,
+        'search_query' : query ,
+        'selected_category' : selected_category ,
         }
 
     return render(request, 'products/all_products.html', context) 
@@ -183,6 +190,8 @@ def cart(request):
 
 def add_to_cart(request , product_id):
     register_id = request.session.get('register_id')
+    if not register_id:
+        return redirect('login')
     product = get_object_or_404(AllProducts, id= product_id)
 
     cart , created = CartItem.objects.get_or_create(user_id=register_id, product=product)
@@ -239,6 +248,8 @@ def wishlist(request):
 
 def add_to_wishlist(request,product_id):
     wishlist_id =request.session.get('register_id')
+    if not wishlist_id:
+        return redirect('login')
     product = get_object_or_404(AllProducts , id = product_id)
 
     wishlist = Wishlist.objects.filter(user_id = wishlist_id,product = product).first()
@@ -260,4 +271,19 @@ def delete_from_wishlist(request , product_id):
     return redirect('wishlist')
 
 
- 
+def buy_now(request):
+    if request.method == "POST":
+        product_id = request.POST.get("product_id") 
+        product = get_object_or_404(AllProducts , id = product_id)
+
+        request.session['buy_now_product'] = {
+            'id' : product.id , 
+            'quantity' : 1
+        }
+
+        return redirect('address')
+
+    return redirect('all_products')
+
+def terms(request):
+    return render(request , 'mart/terms.html')

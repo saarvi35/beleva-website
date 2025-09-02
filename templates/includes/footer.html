@@ -1,6 +1,6 @@
 {% load static %}
 
-<footer class="bg-dark text-white pt-5">
+<footer class="text-white pt-5" style="background-color: rgb(54, 77, 92);">
   <div class="container">
     <div class="row text-start">
 
@@ -18,7 +18,8 @@
         <ul class="list-unstyled">
           <li><a href="{% url 'home' %}" class="text-white text-decoration-none small">Home</a></li>
           <li><a href="{% url 'all_products' %}" class="text-white text-decoration-none small">Products</a></li>
-          <li><a href="" class="text-white text-decoration-none small">Cart</a></li>
+          <li><a href="{% url 'cart' %}" class="text-white text-decoration-none small">Shopping Bag</a></li>
+          <li><a href="{% url 'wishlist' %}" class="text-white text-decoration-none small">Wishlist</a></li>
         </ul>
       </div>
 

@@ -24,7 +24,7 @@
 
 </head>
 
-<body class="containers">
+<body class="containers" >
 
 
 
@@ -33,14 +33,41 @@
 
     {% include 'includes/navbar.html' %}
 
-
+{% if messages %}
+  <div id="floating-message"
+       class="position-fixed top-25 start-50 translate-middle-x mt-3 px-4 py-2 rounded shadow text-center small"
+       style="z-index: 1055; background-color: white; min-width: 300px;">
+    {% for message in messages %}
+      <span class="{% if message.tags == 'success' %}text-success
+                   {% elif message.tags == 'error' or message.tags == 'danger' %}text-danger
+                   {% elif message.tags == 'warning' %}text-warning
+                   {% else %}text-secondary{% endif %}">
+        {{ message }}
+      </span>
+    {% endfor %}
+  </div>
+{% endif %}
     {% block content %}
 
     {% endblock %}
 
     {% comment %} footer {% endcomment %}
 
+    {% block footer %}
     {% include 'includes/footer.html' %}
+    {% endblock %}
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const msg = document.getElementById("floating-message");
+        if (msg) {
+            setTimeout(() => {
+                msg.style.transition = "opacity 0.5s ease";
+                msg.style.opacity = "0";
+                setTimeout(() => msg.remove(), 500);
+            }, 2500);  
+        }
+    });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"
         integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>

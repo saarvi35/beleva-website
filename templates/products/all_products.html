@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class=" bg-light py-5 px-5 mx-0">
+<div class="py-5 px-5 mx-0">
   <h3 class="mb-4 fw-bold text-center"> {{heading}} </h3>
 
   <div class="row">
@@ -59,9 +59,10 @@
 
     <!-- PRODUCT LISTING -->
     <div class="col-md-9">
-
+      <div class="d-flex justify-content-between align-items-center mb-3">
+      
       <!-- Sorting Dropdown -->
-      <div class="d-flex justify-content-end align-items-center mb-4" style="gap: 8px;">
+      <div class="d-flex justify-content-end" style="gap: 8px;">
   <span class="fw-semibold">Sort by</span>
   
   <div class="dropdown">
@@ -76,28 +77,26 @@
     </ul>
   </div>
       </div>
+      {% if selected_categories %}
+        <div>
+            <span class="fw-semibold">Selected Categories:</span>
+            <span class="text-dark text-capitalize">
+                {{ selected_category|join:", " }}
+            </span>
+        </div>
+      {% endif %}
+      </div>
       <div class="row g-4 justify-content-center">
         {% for product in page_object %}
-          <div class="col-12 col-sm-6 col-md-4 col-lg-4 mb-4">
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
             
-                <div class="card product-card border-0 shadow p-3" style="border-radius: 18px;">
-          <!-- Product Image -->
-          <div class="product-image-container mb-3">
-            <img src="{{ product.details_image.first.image.url }}" class="product-img" alt="{{ product.product_name }}">
-            <!-- Wishlist -->
-            <button class="btn position-absolute top-0 end-0 m-2 wishlist-btn "
-                  data-product-id="{{ product.id }}"
-                  onclick="toggleWishlist(this)"
-                  title="Toggle wishlist">
-          <i class="{% if product.id in wishlist_ids %}fas{% else %}far{% endif %} fa-heart text-danger"></i>
-        </button>
-          </div>
-                  <a href="{% url 'product_details' product.id %}" class="text-decoration-none text-dark">
-
-          <!-- Product Info -->
-          <h5 class="fw-semibold mb-1 text-dark text-truncate">{{ product.product_name }}</h5>
-          <p class="text-muted small mb-2 text-truncate">{{ product.description }}</p>
-
+          <div class="card product-card border-1 shadow-lg p-3" style="border-radius: 16px;">
+<a href="{% url 'product_details' product.id %}" class="text-decoration-none text-dark">
+            <img src="{{ product.details_image.first.image.url }}" ... class="product-img mb-3"
+              style="height: 250px; object-fit: cover; border-radius: 10px;" alt="{{ product.product_name }}">
+            <h5 class="fw-semibold mb-1 text-dark text-truncate">{{ product.product_name }}</h5>
+            <p class="text-muted small text-truncate">{{ product.description }}</p>
+</a>
           <!-- ratings and reviews -->
            <div class="mb-2">
             {% with rating=product.ratings %}
@@ -117,21 +116,26 @@
               {% endif %}
             {% endwith %}
           </div>
-          <!-- Price & Wishlist -->
-          <div class="d-flex justify-content-between align-items-center">
-            {% if product.discount_price %}
-              <div class="price-info d-flex align-items-center gap-2">
-                <span class="text-muted text-decoration-line-through small">₹{{ product.original_price }}</span>
-                <span class="text-danger fw-bold">₹{{ product.discount_price }}</span>
+            <!-- Price + Wishlist icon in same row -->
+            <div class="d-flex justify-content-between align-items-center px-2 mt-2">
+              {% if product.discount_price %}
+              <div>
+                <span class="text-muted text-decoration-line-through">₹ {{ product.original_price }}</span>
+                <span class="text-danger fw-bold">₹ {{ product.discount_price }}</span>
               </div>
-            {% else %}
-              <span class="text-danger fw-bold">₹{{ product.original_price }}</span>
-            {% endif %}
-
-            
+              {% else %}
+              <span class="text-danger fw-bold">₹ {{ product.original_price }}</span>
+              {% endif %}
+              
+                <button class="btn position-absolute end-0 m-2 wishlist-btn "
+                          data-product-id="{{ product.id }}"
+                          onclick="toggleWishlist(this)"
+                          title="Toggle wishlist">
+                  <i class="{% if product.id in wishlist_ids %}fas{% else %}far{% endif %} fa-heart text-danger"></i>
+                </button>
+              
+            </div>
           </div>
-          </a>
-        </div>
            
           </div>
         {% empty %}
