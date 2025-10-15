@@ -149,7 +149,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
 
 // deals timer
-  const end = new Date("2025-09-15T23:59:59").getTime();
+  const end = new Date("2025-11-15T23:59:59").getTime();
   const t = setInterval(() => {
     let d = end - Date.now();
     if (d <= 0) return document.getElementById("deal-timer").innerHTML="Deal Expired!", clearInterval(t);
