@@ -181,8 +181,8 @@ def address(request):
                     'quantity' : 1,
                 }],
                 mode= 'payment',
-                success_url= 'http://127.0.0.1:8000//accounts/payment_success/' , 
-                cancel_url= 'http://127.0.0.1:8000//accounts/payment_cancel' ,
+                success_url= 'http://beleva-website.onrender.com/accounts/payment_success/' , 
+                cancel_url= 'http://beleva-website.onrender.com/accounts/payment_cancel' ,
                 customer_email= email_shipping ,
             )
 
